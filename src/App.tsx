@@ -1,21 +1,29 @@
-import React from 'react';
+import { Outlet } from 'react-router-dom';
 import './App.scss';
 
-interface Props {
-  onClick: () => void;
-  children: React.ReactNode;
-}
-
-export const Provider: React.FC<Props> = React.memo(({ onClick, children }) => (
-  <button type="button" onClick={onClick}>
-    {children}
-  </button>
-));
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
+import { useState } from 'react';
+import { BurgerMenu } from './components/Header/components/BurgerMenu';
 
 export const App: React.FC = () => {
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+
   return (
-    <div className="starter">
-      <Provider onClick={() => ({})}>TodoList</Provider>
+    <div className="App">
+      <Header
+        toggleBurger={() => setIsBurgerOpen(!isBurgerOpen)}
+        isBurgerOpen={isBurgerOpen}
+      />
+      <BurgerMenu
+        isOpen={isBurgerOpen}
+        closeMenu={() => setIsBurgerOpen(false)}
+      />
+      <main>
+        <Outlet />
+      </main>
+
+      <Footer />
     </div>
   );
 };
